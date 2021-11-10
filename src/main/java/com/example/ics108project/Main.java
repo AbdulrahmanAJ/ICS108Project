@@ -7,9 +7,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class Main extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         Scene scene = new Scene(new Pane(), 320, 240);
         stage.setTitle("Hello!");
         stage.setScene(scene);
