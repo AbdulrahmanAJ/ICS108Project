@@ -5,15 +5,23 @@ package project;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class TestClass extends Application {
+public class Main extends Application {
 	 
 	public static void main(String[] args) {
-		launch(args);
 		CommonClass.loadBinaryData();
+		launch(args);
+
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+
+		primaryStage.setScene(CommonClass.mainScene);
 		primaryStage.show();
+
+		primaryStage.setOnCloseRequest(e -> {
+			CommonClass.saveData();
+		});
+
 	}
 }

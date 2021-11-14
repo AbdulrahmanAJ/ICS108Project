@@ -84,11 +84,8 @@ class Course implements Serializable{
         
     }
     
-    
     public void drop() {
-       
          this.availableSeats++;
-       
     }
 
     @Override

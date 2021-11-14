@@ -1,17 +1,24 @@
 package project;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import project.panes.*;
+
+import java.io.*;
 import java.util.ArrayList;
 
 public class CommonClass {
+    // set the common variables
 	public static ArrayList<Course> courseList = new ArrayList<>();
     public static ArrayList<Student> studentList = new ArrayList<>();
-      
+    public static BorderPane mainPain = new MainPain();
+    public static BorderPane studentsPain = new StudentPain();
+    public static BorderPane coursesPain = new CoursePane();
+    public static Scene mainScene = new Scene(mainPain);
+
     private static final  File FILE = new File("src/main/resources/project/Registration.dat");
 
-	public static final void loadBinaryData() {
+    // the function that reads the file, It will fill the "courseList" and the "studentList"
+	public static void loadBinaryData() {
         System.out.println("start loading");
         try (
             FileInputStream fos = new FileInputStream(FILE);
@@ -31,4 +38,30 @@ public class CommonClass {
             System.out.println(e.getMessage());
         }
     }
+
+    // a function the takes a course and return a list of a students, that are taking the course
+    public static ArrayList<Student> courseStudents(Course course) {
+        ArrayList<Student> courseStudents = new ArrayList<>();
+        for (Student student: studentList){
+            if (student.getCourses().contains(course)){
+                courseStudents.add(student);
+            }
+        }
+        return courseStudents;
+    }
+
+    // a function that save the data
+    public static void saveData(){
+        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(FILE) )) {
+            // write the students and the course to file
+            output.writeObject(CommonClass.courseList);
+            output.writeObject(CommonClass.studentList);
+            System.out.println("Data Saved");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+
 }
