@@ -1,8 +1,6 @@
 package project;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import project.panes.*;
-
 import java.io.*;
 import java.util.ArrayList;
 
@@ -39,16 +37,6 @@ public class CommonClass {
         }
     }
 
-    // a function the takes a course and return a list of a students, that are taking the course
-    public static ArrayList<Student> courseStudents(Course course) {
-        ArrayList<Student> courseStudents = new ArrayList<>();
-        for (Student student: studentList){
-            if (student.getCourses().contains(course)){
-                courseStudents.add(student);
-            }
-        }
-        return courseStudents;
-    }
 
     // a function that save the data
     public static void saveData(){

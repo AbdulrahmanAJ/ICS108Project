@@ -1,9 +1,9 @@
-package project.panes;
+package project;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
-import project.CommonClass;
+
 
 public class StudentPain extends BorderPane {
     public StudentPain() {

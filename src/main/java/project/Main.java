@@ -10,11 +10,10 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		CommonClass.loadBinaryData();
 		launch(args);
-
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage){
 
 		primaryStage.setScene(CommonClass.mainScene);
 		primaryStage.show();
