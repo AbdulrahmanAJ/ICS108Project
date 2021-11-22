@@ -6,7 +6,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	 
+
+
 	public static void main(String[] args) {
 		CommonClass.loadBinaryData();
 		launch(args);
@@ -14,13 +15,16 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage){
+		CommonClass.primaryStage = primaryStage;
+
 
 		primaryStage.setScene(CommonClass.mainScene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
-
 		primaryStage.setOnCloseRequest(e -> {
 			CommonClass.saveData();
 		});
 
 	}
+
 }

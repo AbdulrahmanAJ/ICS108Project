@@ -9,11 +9,15 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 
 public class CoursePane extends BorderPane {
+    public static final double WIDTH = 900;
+    public static final double HEIGHT = 700;
+
     public CoursePane() {
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> {
-            CommonClass.mainScene.setRoot(CommonClass.mainPain);
+            CommonClass.setMainPain();
         });
+
         this.setBottom(backButton);
 
         // TODO: 14/11/2021 make the courses pain
