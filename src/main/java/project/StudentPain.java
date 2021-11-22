@@ -34,9 +34,9 @@ public class StudentPain extends BorderPane {
         Button searchButton = new Button("Search");
 
         // Hbox for buttons
-        HBox hBox = new HBox(10, backButton, previousButton, nextButton, registerButton, dropButton, searchButton);
-        hBox.setPadding(new Insets(20));
-        hBox.setAlignment(Pos.CENTER);
+        HBox hBoxForButtons = new HBox(10, backButton, previousButton, nextButton, registerButton, dropButton, searchButton);
+        hBoxForButtons.setPadding(new Insets(20, 20, 20, 20));
+        hBoxForButtons.setAlignment(Pos.CENTER);
 
         // Label and text field for student ID
         TextField IdTextField = new TextField();
@@ -47,10 +47,17 @@ public class StudentPain extends BorderPane {
         IdLabel.setContentDisplay(ContentDisplay.RIGHT);
 
         // Label and ListView for registered courses
+        ListView<Course> courseListView = new ListView<>
+                (FXCollections.observableArrayList());
+        courseListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
+        Label courseLabel = new Label("Registered courses:", courseListView);
+        courseLabel.setContentDisplay(ContentDisplay.RIGHT);
 
         // Vbox for StudentID and registered Courses
-
+        VBox studentVbox = new VBox(20, IdLabel, courseLabel);
+        studentVbox.setPadding(new Insets(20, 20, 20, 20));
+        // studentVbox.setAlignment(Pos.CENTER);
 
         // Label and ComboBox for open courses
 
@@ -80,10 +87,16 @@ public class StudentPain extends BorderPane {
         coursesVbox.setPadding(new Insets(20,20,20,20));
         coursesVbox.setAlignment(Pos.CENTER);
 
+        // HBox for VBoxes
+
+        HBox hBoxForCenter = new HBox(50, studentVbox, coursesVbox);
+        hBoxForCenter.setPadding(new Insets(20, 20, 20, 20));
+        hBoxForCenter.setAlignment((Pos.CENTER));
+
         // TODO: 14/11/2021 make the students pain
 
         // Add elements into scene
-        this.setBottom(hBox);
-        this.setRight(coursesVbox);
+        this.setBottom(hBoxForButtons);
+        this.setCenter(hBoxForCenter);
     }
 }
