@@ -13,8 +13,8 @@ import javafx.scene.text.Text;
 
 public class StudentPain extends BorderPane {
     // the width and the height of the pane
-    public static final double WIDTH = 700;
-    public static final double HEIGHT = 500;
+    public static final double WIDTH = 800;
+    public static final double HEIGHT = 600;
 
     public StudentPain() {
         // the back button
@@ -46,7 +46,7 @@ public class StudentPain extends BorderPane {
         TextField IdTextField = new TextField();
         IdTextField.setPromptText("Enter ID");
 
-        Label IdLabel = new Label("Student ID:", IdTextField);
+        Label IdLabel = new Label("Student ID:             ", IdTextField);
 
         IdLabel.setContentDisplay(ContentDisplay.RIGHT);
 
@@ -60,8 +60,9 @@ public class StudentPain extends BorderPane {
 
         // Vbox for StudentID and registered Courses
         VBox studentVbox = new VBox(20, IdLabel, courseLabel);
+
         studentVbox.setPadding(new Insets(20, 20, 20, 20));
-        // studentVbox.setAlignment(Pos.CENTER);
+        studentVbox.setAlignment(Pos.CENTER_LEFT);
 
         // Label and ComboBox for open courses
 
@@ -87,13 +88,13 @@ public class StudentPain extends BorderPane {
         closedCourseLabel.setContentDisplay(ContentDisplay.RIGHT);
 
         // Vbox for open and closed courses
-        VBox coursesVbox = new VBox(10, openCourseLabel, closedCourseLabel);
+        VBox coursesVbox = new VBox(80, openCourseLabel, closedCourseLabel);
         coursesVbox.setPadding(new Insets(20,20,20,20));
         coursesVbox.setAlignment(Pos.CENTER);
 
         // HBox for VBoxes
 
-        HBox hBoxForCenter = new HBox(50, studentVbox, coursesVbox);
+        HBox hBoxForCenter = new HBox(100, studentVbox, coursesVbox);
         hBoxForCenter.setPadding(new Insets(20, 20, 20, 20));
         hBoxForCenter.setAlignment((Pos.CENTER));
 
