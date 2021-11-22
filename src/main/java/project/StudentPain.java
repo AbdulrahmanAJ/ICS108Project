@@ -12,11 +12,15 @@ import javafx.scene.text.Text;
 
 
 public class StudentPain extends BorderPane {
+    // the width and the height of the pane
+    public static final double WIDTH = 700;
+    public static final double HEIGHT = 500;
+
     public StudentPain() {
         // the back button
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> {
-            CommonClass.mainScene.setRoot(CommonClass.mainPain);
+           CommonClass.setMainPain();
         });
 
         // The previous button
@@ -85,5 +89,6 @@ public class StudentPain extends BorderPane {
         // Add elements into scene
         this.setBottom(hBox);
         this.setRight(coursesVbox);
+
     }
 }
