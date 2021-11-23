@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.Arrays;
 
 public class StudentPain extends BorderPane {
     // the width and the height of the pane
-    public final double WIDTH = 850;
+    public final double WIDTH = 1000;
     public final double HEIGHT = 650;
     // current selected, student and courses
     Student currentStudent = CommonClass.studentList.get(0);
@@ -30,7 +31,7 @@ public class StudentPain extends BorderPane {
         VBox coursesVBox = createCoursesVBox(); // for Jamal
 
         // HBox for VBoxes
-        HBox centerHBox = new HBox(100, studentVBox, coursesVBox);
+        HBox centerHBox = new HBox(50, studentVBox, coursesVBox);
         centerHBox.setPadding(new Insets(20, 20, 20, 20));
         centerHBox.setAlignment((Pos.CENTER));
 
@@ -79,11 +80,10 @@ public class StudentPain extends BorderPane {
     // a function that return a Vbox that contains the courses List Views
     private VBox createCoursesVBox() {
         // get the list of the closed and open courses
-        String[][] openAndClosedCourses = getOpenAndClosedCourses();
-        String[] openCourses = openAndClosedCourses[0];
-        String[] closedCourses = openAndClosedCourses[1];
-        System.out.println(Arrays.toString(openCourses));
-        System.out.println(Arrays.toString(closedCourses));
+        ArrayList<String>[] openAndClosedCourses = getOpenAndClosedCourses();
+        ArrayList<String> openCourses = openAndClosedCourses[0];
+        ArrayList<String> closedCourses = openAndClosedCourses[1];
+
 
         // TODO: 23/11/2021 create the openListView, and the closedListView, By Abdulrahman
 
@@ -92,13 +92,11 @@ public class StudentPain extends BorderPane {
         ListView<String> openCoursesListView = new ListView<>(FXCollections.observableArrayList(openCourses));
         ListView<String> closedCoursesListView = new ListView<>(FXCollections.observableArrayList(closedCourses));
 
-        // set the selection mode of the list view
-//        openCoursesListView.setSelectionModel(SelectionMode.MULTIPLE);
-//        closedCoursesListView.setSelectionModel(SelectionMode.SINGLE);
-
         // set the maximum height to the ListView
-        openCoursesListView.setMaxHeight(HEIGHT/3);
-        closedCoursesListView.setMaxHeight(HEIGHT/3);
+        openCoursesListView.setMaxHeight(200);
+        closedCoursesListView.setMaxHeight(200);
+        openCoursesListView.setMinWidth(350);
+        closedCoursesListView.setMinWidth(350);
 
         // make the label for the listView
         Label openCoursesLabel = new Label("Open courses:", openCoursesListView);
@@ -109,7 +107,7 @@ public class StudentPain extends BorderPane {
 
 
         // Vbox for open and closed courses Lists View
-        VBox coursesVbox = new VBox(50, openCoursesLabel, closedCoursesLabel);
+        VBox coursesVbox = new VBox(15, openCoursesLabel, closedCoursesLabel);
         coursesVbox.setPadding(new Insets(20,20,20,20));
         coursesVbox.setAlignment(Pos.CENTER);
 
@@ -158,22 +156,14 @@ public class StudentPain extends BorderPane {
         return buttonsHBox;
     }
 
-    private String[][] getOpenAndClosedCourses() {
+    private ArrayList<String>[] getOpenAndClosedCourses() {
         ArrayList<String> openCoursesList = new ArrayList<>();
         ArrayList<String> closedCoursesList = new ArrayList<>();
         for (Course course:CommonClass.courseList) {
             if (course.getAvailableSeats() != 0) openCoursesList.add(course.toString());
             else closedCoursesList.add(course.toString());
         }
-        // make an array from the arrayList
-//        Object[] openCoursesObjectsList = openCoursesList.toArray();
-//        Object[] closedCoursesObjectsList = openCoursesList.toArray();
-        String[] openCoursesArray = new String[openCoursesList.size()];
-        String[] closedCoursesArray = new String[closedCoursesList.size()];
-        for (int i=0; openCoursesList.size()>i; i++) openCoursesArray[0] = openCoursesList.get(0);
-        for (int i=0; closedCoursesList.size()>i; i++) closedCoursesArray[0] = closedCoursesList.get(0);
-
-        return new String[][] {openCoursesArray, closedCoursesArray};
+        return new ArrayList[]{openCoursesList, closedCoursesList};
     }
 
 }
