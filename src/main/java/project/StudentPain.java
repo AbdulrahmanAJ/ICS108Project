@@ -51,6 +51,8 @@ public class StudentPain extends BorderPane {
         IdLabel.setContentDisplay(ContentDisplay.RIGHT);
 
         // Label and ListView for registered courses
+
+        // TODO: 23/11/2021 add elements to registered courses to ListView
         ListView<Course> courseListView = new ListView<>
                 (FXCollections.observableArrayList());
         courseListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -66,6 +68,7 @@ public class StudentPain extends BorderPane {
 
         // Label and ComboBox for open courses
 
+        // TODO: 23/11/2021 add open courses to ComboBox
         ComboBox<String> openComboBox = new ComboBox<>();
 
         ObservableList<String> openCourses =
@@ -77,6 +80,7 @@ public class StudentPain extends BorderPane {
         openCourseLabel.setContentDisplay(ContentDisplay.RIGHT);
         // Label and ComboBox for closed courses
 
+        // TODO: 23/11/2021 add closed courses to ComboBox
         ComboBox<String> closedComboBox = new ComboBox<>();
 
         ObservableList<String> closedCourses =
