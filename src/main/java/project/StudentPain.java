@@ -11,12 +11,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class StudentPain extends BorderPane {
     // the width and the height of the pane
-    public final double WIDTH = 800;
-    public final double HEIGHT = 600;
+    public final double WIDTH = 850;
+    public final double HEIGHT = 650;
     // current selected, student and courses
     Student currentStudent;
     Course selectedCourseToDrop;
@@ -34,6 +35,7 @@ public class StudentPain extends BorderPane {
         centerHBox.setAlignment((Pos.CENTER));
 
         // Add elements into the pane
+        this.setPadding(new Insets(10));
         this.setBottom(buttonsHBox);
         this.setCenter(centerHBox);
     }
@@ -69,36 +71,37 @@ public class StudentPain extends BorderPane {
     // a function that return a Vbox that contains the courses List Views
     private VBox createCoursesVBox() {
         // get the list of the closed and open courses
-        ArrayList<Course>[] openAndClosedCourses = getOpenAndClosedCourses();
-        ArrayList<Course> openCourses = openAndClosedCourses[0];
-        ArrayList<Course> closedCourses = openAndClosedCourses[1];
+        String[][] openAndClosedCourses = getOpenAndClosedCourses();
+        String[] openCourses = openAndClosedCourses[0];
+        String[] closedCourses = openAndClosedCourses[1];
+        System.out.println(Arrays.toString(openCourses));
+        System.out.println(Arrays.toString(closedCourses));
 
-        // TODO: 23/11/2021 By Abdulrahman
+        // TODO: 23/11/2021 create the openListView, and the closedListView, By Abdulrahman
 
-        // TODO: 23/11/2021 add open courses to ComboBox
-        ComboBox<String> openComboBox = new ComboBox<>();
+        // TODO: 23/11/2021 create openCoursesListView, closedCoursesListView
+        // initialize the openCoursesListView, and the closedCoursesListView
+        ListView<String> openCoursesListView = new ListView<>(FXCollections.observableArrayList(openCourses));
+        ListView<String> closedCoursesListView = new ListView<>(FXCollections.observableArrayList(closedCourses));
 
-        ObservableList<String> openCoursesList = FXCollections.observableArrayList();
+        // set the selection mode of the list view
+//        openCoursesListView.setSelectionModel(SelectionMode.MULTIPLE);
+//        closedCoursesListView.setSelectionModel(SelectionMode.SINGLE);
 
-        openComboBox.getItems().addAll(openCoursesList);
+        // set the maximum height to the ListView
+        openCoursesListView.setMaxHeight(HEIGHT/3);
+        closedCoursesListView.setMaxHeight(HEIGHT/3);
 
-        Label openCourseLabel = new Label("Open courses:", openComboBox);
-        openCourseLabel.setContentDisplay(ContentDisplay.RIGHT);
-        // Label and ComboBox for closed courses
+        // make the label for the listView
+        Label openCoursesLabel = new Label("Open courses:", openCoursesListView);
+        openCoursesLabel.setContentDisplay(ContentDisplay.BOTTOM);
+        Label closedCoursesLabel = new Label("Closed courses:", closedCoursesListView);
+        closedCoursesLabel.setContentDisplay(ContentDisplay.BOTTOM);
 
-        // TODO: 23/11/2021 add closed courses to ComboBox
-        ComboBox<String> closedComboBox = new ComboBox<>();
 
-        ObservableList<String> closedCoursesList =
-                FXCollections.observableArrayList();
 
-        closedComboBox.getItems().addAll();
-
-        Label closedCourseLabel = new Label("Closed courses:", closedComboBox);
-        closedCourseLabel.setContentDisplay(ContentDisplay.RIGHT);
-
-        // Vbox for open and closed courses
-        VBox coursesVbox = new VBox(80, openCourseLabel, closedCourseLabel);
+        // Vbox for open and closed courses Lists View
+        VBox coursesVbox = new VBox(50, openCoursesLabel, closedCoursesLabel);
         coursesVbox.setPadding(new Insets(20,20,20,20));
         coursesVbox.setAlignment(Pos.CENTER);
 
@@ -147,15 +150,21 @@ public class StudentPain extends BorderPane {
         return buttonsHBox;
     }
 
-    private ArrayList<Course>[] getOpenAndClosedCourses() {
-        ArrayList<Course>[] openAndClosedCourses = new ArrayList[]{new ArrayList<Course>(), new ArrayList<Course>()};
+    private String[][] getOpenAndClosedCourses() {
+        ArrayList<String> openCoursesList = new ArrayList<>();
+        ArrayList<String> closedCoursesList = new ArrayList<>();
         for (Course course:CommonClass.courseList) {
-            if (course.getAvailableSeats() != 0) {
-                openAndClosedCourses[0].add(course);
-            } else {
-                openAndClosedCourses[0].add(course);
-            }
+            if (course.getAvailableSeats() != 0) openCoursesList.add(course.toString());
+            else closedCoursesList.add(course.toString());
         }
-        return openAndClosedCourses;
+        // make an array from the arrayList
+//        Object[] openCoursesObjectsList = openCoursesList.toArray();
+//        Object[] closedCoursesObjectsList = openCoursesList.toArray();
+        String[] openCoursesArray = new String[openCoursesList.size()];
+        String[] closedCoursesArray = new String[closedCoursesList.size()];
+        for (int i=0; openCoursesList.size()>i; i++) openCoursesArray[0] = openCoursesList.get(0);
+        for (int i=0; closedCoursesList.size()>i; i++) closedCoursesArray[0] = closedCoursesList.get(0);
+
+        return new String[][] {openCoursesArray, closedCoursesArray};
     }
 }

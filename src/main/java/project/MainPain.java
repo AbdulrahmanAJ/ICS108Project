@@ -18,7 +18,7 @@ public class MainPain extends BorderPane {
     // the constructor for the main pain
     public MainPain() {
         // create the buttons and the texts
-        HBox buttonsHBox = createButtonsHbox();
+        HBox buttonsHBox = createButtonsHBox();
         VBox textsVBox = createTextVbox();
 
         // insert the nodes to the pane
@@ -28,7 +28,7 @@ public class MainPain extends BorderPane {
     }
 
     // a function that create the buttons vbox
-    private HBox createButtonsHbox() {
+    private HBox createButtonsHBox() {
         // create the buttons and set the actions for the buttons
         Button coursesButton = new Button("View courses");
         Button studentsButton = new Button("View students Details");
