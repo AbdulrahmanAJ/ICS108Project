@@ -18,7 +18,7 @@ public class StudentPain extends BorderPane {
     public final double WIDTH = 800;
     public final double HEIGHT = 600;
     // current selected, student and courses
-    Student currentStudent;
+    Student currentStudent = CommonClass.studentList.get(0);
     Course selectedCourseToDrop;
     Course selectedCourseToRegister;
 
@@ -42,16 +42,24 @@ public class StudentPain extends BorderPane {
     private VBox createStudentVBox() {
         // TODO: 23/11/2021 createStudentVBox by fahad
         // Label and text field for student ID
-        TextField IdTextField = new TextField();
-        IdTextField.setPromptText("Enter ID");
+        TextField IDTextField = new TextField();
+        IDTextField.setPromptText("Enter ID");
 
-        Label IdLabel = new Label("Student ID:             ", IdTextField);
+        Label IdLabel = new Label("Student ID:             ", IDTextField);
         IdLabel.setContentDisplay(ContentDisplay.RIGHT);
+
+        //getting the current student
+        for (int i = 0; i < CommonClass.studentList.size(); i++){
+            if (IDTextField.getText().equals(CommonClass.studentList.get(i).getStudID())){
+                currentStudent = CommonClass.studentList.get(i);
+            }
+        }
+
 
         // Label and ListView for registered courses
 
         // TODO: 23/11/2021 make the registered courses ListView
-        ListView<Course> courseListView = new ListView<> (FXCollections.observableArrayList());
+        ListView<Course> courseListView = new ListView<> (FXCollections.observableArrayList(currentStudent.getCourses()));
         courseListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         Label courseLabel = new Label("Registered courses:", courseListView);
@@ -158,4 +166,5 @@ public class StudentPain extends BorderPane {
         }
         return openAndClosedCourses;
     }
+
 }
