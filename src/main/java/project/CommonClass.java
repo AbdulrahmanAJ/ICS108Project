@@ -52,20 +52,20 @@ public class CommonClass {
 
     public static void setMainPain() {
         mainScene.setRoot(mainPain);
-        primaryStage.setWidth(MainPain.WIDTH);
-        primaryStage.setHeight(MainPain.HEIGHT);
+        primaryStage.setWidth(mainPain.WIDTH);
+        primaryStage.setHeight(mainPain.HEIGHT);
         primaryStage.centerOnScreen();
     }
     public static void setStudentsPain() {
         mainScene.setRoot(studentsPain);
-        primaryStage.setWidth(StudentPain.WIDTH);
-        primaryStage.setHeight(StudentPain.HEIGHT);
+        primaryStage.setWidth(studentsPain.WIDTH);
+        primaryStage.setHeight(studentsPain.HEIGHT);
         primaryStage.centerOnScreen();
     }
     public static void setCoursesPain() {
         mainScene.setRoot(coursesPain);
-        primaryStage.setWidth(CoursePane.WIDTH);
-        primaryStage.setHeight(CoursePane.HEIGHT);
+        primaryStage.setWidth(studentsPain.WIDTH);
+        primaryStage.setHeight(studentsPain.HEIGHT);
         primaryStage.centerOnScreen();
     }
 

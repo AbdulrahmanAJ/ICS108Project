@@ -17,14 +17,12 @@ public class Main extends Application {
 	public void start(Stage primaryStage){
 		CommonClass.primaryStage = primaryStage;
 
-
+		// create the primaryStage
 		primaryStage.setScene(CommonClass.mainScene);
 		primaryStage.setResizable(false);
 		primaryStage.show();
 		primaryStage.setOnCloseRequest(e -> {
 			CommonClass.saveData();
 		});
-
 	}
-
 }

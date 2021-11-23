@@ -10,51 +10,48 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+
 
 public class StudentPain extends BorderPane {
     // the width and the height of the pane
-    public static final double WIDTH = 800;
-    public static final double HEIGHT = 600;
+    public final double WIDTH = 800;
+    public final double HEIGHT = 600;
+    // current selected, student and courses
+    Student currentStudent;
+    Course selectedCourseToDrop;
+    Course selectedCourseToRegister;
 
     public StudentPain() {
-        // the back button
-        Button backButton = new Button("Back");
-        backButton.setOnAction(e -> {
-           CommonClass.setMainPain();
-        });
+        // fill the openCourses and the closedCourses
+        HBox buttonsHBox = createButtonsHBox();
+        VBox studentVBox = createStudentVBox(); // for Fahad
+        VBox coursesVBox = createCoursesVBox(); // for Jamal
 
-        // The previous button
-        Button previousButton = new Button("<Previous");
+        // HBox for VBoxes
+        HBox centerHBox = new HBox(100, studentVBox, coursesVBox);
+        centerHBox.setPadding(new Insets(20, 20, 20, 20));
+        centerHBox.setAlignment((Pos.CENTER));
 
-        // The next button
-        Button nextButton = new Button("Next>");
+        // Add elements into the pane
+        this.setBottom(buttonsHBox);
+        this.setCenter(centerHBox);
+    }
 
-        // The register button
-        Button registerButton = new Button("Register");
-        // The drop button
-        Button dropButton = new Button("Drop");
-
-        // The search button
-        Button searchButton = new Button("Search");
-
-        // Hbox for buttons
-        HBox hBoxForButtons = new HBox(10, backButton, previousButton, nextButton, registerButton, dropButton, searchButton);
-        hBoxForButtons.setPadding(new Insets(20, 20, 20, 20));
-        hBoxForButtons.setAlignment(Pos.CENTER);
-
+    // a function that fill the list with the open courses, and the closed courses
+    private VBox createStudentVBox() {
+        // TODO: 23/11/2021 createStudentVBox by fahad
         // Label and text field for student ID
         TextField IdTextField = new TextField();
         IdTextField.setPromptText("Enter ID");
 
         Label IdLabel = new Label("Student ID:             ", IdTextField);
-
         IdLabel.setContentDisplay(ContentDisplay.RIGHT);
 
         // Label and ListView for registered courses
 
-        // TODO: 23/11/2021 add elements to registered courses to ListView
-        ListView<Course> courseListView = new ListView<>
-                (FXCollections.observableArrayList());
+        // TODO: 23/11/2021 make the registered courses ListView
+        ListView<Course> courseListView = new ListView<> (FXCollections.observableArrayList());
         courseListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         Label courseLabel = new Label("Registered courses:", courseListView);
@@ -66,15 +63,24 @@ public class StudentPain extends BorderPane {
         studentVbox.setPadding(new Insets(20, 20, 20, 20));
         studentVbox.setAlignment(Pos.CENTER_LEFT);
 
-        // Label and ComboBox for open courses
+        return studentVbox;
+    }
+
+    // a function that return a Vbox that contains the courses List Views
+    private VBox createCoursesVBox() {
+        // get the list of the closed and open courses
+        ArrayList<Course>[] openAndClosedCourses = getOpenAndClosedCourses();
+        ArrayList<Course> openCourses = openAndClosedCourses[0];
+        ArrayList<Course> closedCourses = openAndClosedCourses[1];
+
+        // TODO: 23/11/2021 By Abdulrahman
 
         // TODO: 23/11/2021 add open courses to ComboBox
         ComboBox<String> openComboBox = new ComboBox<>();
 
-        ObservableList<String> openCourses =
-                FXCollections.observableArrayList();
+        ObservableList<String> openCoursesList = FXCollections.observableArrayList();
 
-        openComboBox.getItems().addAll(openCourses);
+        openComboBox.getItems().addAll(openCoursesList);
 
         Label openCourseLabel = new Label("Open courses:", openComboBox);
         openCourseLabel.setContentDisplay(ContentDisplay.RIGHT);
@@ -83,7 +89,7 @@ public class StudentPain extends BorderPane {
         // TODO: 23/11/2021 add closed courses to ComboBox
         ComboBox<String> closedComboBox = new ComboBox<>();
 
-        ObservableList<String> closedCourses =
+        ObservableList<String> closedCoursesList =
                 FXCollections.observableArrayList();
 
         closedComboBox.getItems().addAll();
@@ -96,17 +102,60 @@ public class StudentPain extends BorderPane {
         coursesVbox.setPadding(new Insets(20,20,20,20));
         coursesVbox.setAlignment(Pos.CENTER);
 
-        // HBox for VBoxes
+        return coursesVbox;
+    }
 
-        HBox hBoxForCenter = new HBox(100, studentVbox, coursesVbox);
-        hBoxForCenter.setPadding(new Insets(20, 20, 20, 20));
-        hBoxForCenter.setAlignment((Pos.CENTER));
+    // a function that return a Vbox that contains the studentIDTextField and the Student courses List View
+    private HBox createButtonsHBox() {
+        // the back button
+        Button backButton = new Button("Back");
+        backButton.setOnAction(e -> {
+            CommonClass.setMainPain();
+        });
+        // The previous button
+        Button previousButton = new Button("<Previous");
+        previousButton.setOnAction(e -> {
 
-        // TODO: 14/11/2021 make the students pain
+        });
+        // The next button
+        Button nextButton = new Button("Next>");
+        nextButton.setOnAction(e -> {
 
-        // Add elements into scene
-        this.setBottom(hBoxForButtons);
-        this.setCenter(hBoxForCenter);
+        });
+        // The register button
+        Button registerButton = new Button("Register");
+        registerButton.setOnAction(e -> {
 
+        });
+        // The drop button
+        Button dropButton = new Button("Drop");
+        dropButton.setOnAction(e -> {
+
+        });
+        // The search button
+        Button searchButton = new Button("Search");
+        searchButton.setOnAction(e -> {
+
+        });
+
+        // HBox
+        // for buttons
+        HBox buttonsHBox = new HBox(10, backButton, previousButton, nextButton, registerButton, dropButton, searchButton);
+        buttonsHBox.setPadding(new Insets(20, 20, 20, 20));
+        buttonsHBox.setAlignment(Pos.CENTER);
+
+        return buttonsHBox;
+    }
+
+    private ArrayList<Course>[] getOpenAndClosedCourses() {
+        ArrayList<Course>[] openAndClosedCourses = new ArrayList[]{new ArrayList<Course>(), new ArrayList<Course>()};
+        for (Course course:CommonClass.courseList) {
+            if (course.getAvailableSeats() != 0) {
+                openAndClosedCourses[0].add(course);
+            } else {
+                openAndClosedCourses[0].add(course);
+            }
+        }
+        return openAndClosedCourses;
     }
 }
