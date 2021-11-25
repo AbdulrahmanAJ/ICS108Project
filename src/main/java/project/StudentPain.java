@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class StudentPain extends BorderPane {
@@ -25,6 +26,7 @@ public class StudentPain extends BorderPane {
     Course selectedCourseToRegister;
     TextField IDTextField;
     ListView<Course> courseListView;
+    ObservableList<Course> transitionList;
 
     public StudentPain() {
         // fill the openCourses and the closedCourses
@@ -142,7 +144,8 @@ public class StudentPain extends BorderPane {
                 IDTextField.setText(CommonClass.studentList.get(currentIndex - 1).getStudID());
             }
 
-            courseListView = new ListView<> (FXCollections.observableArrayList(currentStudent.getCourses()));
+            transitionList = FXCollections.observableArrayList(currentStudent.getCourses());
+            courseListView.setItems(transitionList);
         });
         // The next button
         Button nextButton = new Button("Next>");
@@ -165,9 +168,8 @@ public class StudentPain extends BorderPane {
                 IDTextField.setText(CommonClass.studentList.get(currentIndex + 1).getStudID());
             }
 
-
-
-            courseListView = new ListView<> (FXCollections.observableArrayList(currentStudent.getCourses()));
+            transitionList = FXCollections.observableArrayList(currentStudent.getCourses());
+            courseListView.setItems(transitionList);
         });
         // The register button
         Button registerButton = new Button("Register");
@@ -188,7 +190,9 @@ public class StudentPain extends BorderPane {
                 }
             }
 
-            courseListView = new ListView<> (FXCollections.observableArrayList(currentStudent.getCourses()));
+            transitionList = FXCollections.observableArrayList(currentStudent.getCourses());
+            courseListView.setItems(transitionList);
+
         });
 
         // HBox
