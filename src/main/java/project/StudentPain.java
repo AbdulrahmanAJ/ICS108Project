@@ -23,7 +23,8 @@ public class StudentPain extends BorderPane {
     Student currentStudent;
     Course selectedCourseToDrop;
     Course selectedCourseToRegister;
-    TextField IDTextField = new TextField();
+    TextField IDTextField;
+    ListView<Course> courseListView;
 
     public StudentPain() {
         // fill the openCourses and the closedCourses
@@ -46,7 +47,7 @@ public class StudentPain extends BorderPane {
     private VBox createStudentVBox() {
         // TODO: 23/11/2021 createStudentVBox by fahad
         // Label and text field for student ID
-        // TextField IDTextField = new TextField();
+        IDTextField = new TextField();
         IDTextField.setPromptText("Enter ID");
         IDTextField.setText(CommonClass.studentList.get(0).getStudID());
 
@@ -64,7 +65,7 @@ public class StudentPain extends BorderPane {
         // Label and ListView for registered courses
 
         // TODO: 23/11/2021 make the registered courses ListView
-        ListView<Course> courseListView = new ListView<> (FXCollections.observableArrayList(currentStudent.getCourses()));
+        courseListView = new ListView<> (FXCollections.observableArrayList(currentStudent.getCourses()));
 
         Label courseLabel = new Label("Registered courses:", courseListView);
         courseLabel.setContentDisplay(ContentDisplay.RIGHT);
@@ -125,12 +126,48 @@ public class StudentPain extends BorderPane {
         // The previous button
         Button previousButton = new Button("<Previous");
         previousButton.setOnAction(e -> {
+            int currentIndex = 0;
 
+            for (int i = 0; i < CommonClass.studentList.size(); i++){
+                if (IDTextField.getText().equals(CommonClass.studentList.get(i).getStudID())){
+                    currentIndex = i;
+                }
+            }
+            if (currentIndex == 0) {
+                currentStudent = CommonClass.studentList.get(0);
+                IDTextField.setText(CommonClass.studentList.get(0).getStudID());
+            }
+            else {
+                currentStudent = CommonClass.studentList.get(currentIndex - 1);
+                IDTextField.setText(CommonClass.studentList.get(currentIndex - 1).getStudID());
+            }
+
+            courseListView = new ListView<> (FXCollections.observableArrayList(currentStudent.getCourses()));
         });
         // The next button
         Button nextButton = new Button("Next>");
         nextButton.setOnAction(e -> {
 
+            int currentIndex = 0;
+
+            for (int i = 0; i < CommonClass.studentList.size(); i++){
+                if (IDTextField.getText().equals(CommonClass.studentList.get(i).getStudID())){
+                    currentIndex = i;
+                }
+            }
+
+            if (currentIndex == CommonClass.studentList.size() - 1) {
+                currentStudent = CommonClass.studentList.get(CommonClass.studentList.size() - 1);
+                IDTextField.setText(CommonClass.studentList.get(CommonClass.studentList.size() - 1).getStudID());
+                }
+            else{
+                currentStudent = CommonClass.studentList.get(currentIndex + 1);
+                IDTextField.setText(CommonClass.studentList.get(currentIndex + 1).getStudID());
+            }
+
+
+
+            courseListView = new ListView<> (FXCollections.observableArrayList(currentStudent.getCourses()));
         });
         // The register button
         Button registerButton = new Button("Register");
@@ -145,7 +182,13 @@ public class StudentPain extends BorderPane {
         // The search button
         Button searchButton = new Button("Search");
         searchButton.setOnAction(e -> {
+            for (int i = 0; i < CommonClass.studentList.size(); i++){
+                if (IDTextField.getText().equals(CommonClass.studentList.get(i).getStudID())){
+                    currentStudent = CommonClass.studentList.get(i);
+                }
+            }
 
+            courseListView = new ListView<> (FXCollections.observableArrayList(currentStudent.getCourses()));
         });
 
         // HBox
