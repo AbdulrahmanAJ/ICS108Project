@@ -31,15 +31,17 @@ public class MainPain extends BorderPane {
     private HBox createButtonsHBox() {
         // create the buttons and set the actions for the buttons
         Button coursesButton = new Button("View courses");
-        Button studentsButton = new Button("View students Details");
-        Button saveButton = new Button("Save");
         coursesButton.setOnAction(e -> {
             CommonClass.setCoursesPain();
         });
+
+        Button studentsButton = new Button("View students Details");
         studentsButton.setOnAction(e -> {
             CommonClass.setStudentsPain();
 
         });
+
+        Button saveButton = new Button("Save");
         saveButton.setOnAction(e -> {
             CommonClass.saveData();
         });

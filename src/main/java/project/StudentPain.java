@@ -24,22 +24,21 @@ public class StudentPain extends BorderPane {
     Student currentStudent = CommonClass.studentList.get(0);
     Course selectedCourseToDrop;
     Course selectedCourseToRegister;
-//    TextField IDTextField;
     ListView<Course> studentCoursesListView;
-    ListView<String> openCoursesListView;
-    ListView<String> closedCoursesListView;
+    ListView<Course> openCoursesListView;
+    ListView<Course> closedCoursesListView;
     Text currentStudentID;
 
     public StudentPain() {
         // fill the openCourses and the closedCourses
         HBox buttonsHBox = createButtonsHBox();
-        VBox leftVBox = new VBox(40,createSearchHBox(), createStudentVBox());
+        VBox studentVBox = new VBox(40,createSearchHBox(), createStudentVBox());
         VBox coursesVBox = createCoursesVBox();
 
         refreshListViews();
 
         // HBox for VBoxes
-        HBox centerHBox = new HBox(25, leftVBox, coursesVBox);
+        HBox centerHBox = new HBox(25, coursesVBox, studentVBox);
         centerHBox.setPadding(new Insets(20));
         centerHBox.setAlignment((Pos.CENTER));
 
@@ -76,14 +75,9 @@ public class StudentPain extends BorderPane {
 
     // a function that return a Vbox that contains the courses List Views
     private VBox createCoursesVBox() {
-        // get the list of the closed and open courses
-        ArrayList<String>[] openAndClosedCourses = getOpenAndClosedCourses();
-        ArrayList<String> openCourses = openAndClosedCourses[0];
-        ArrayList<String> closedCourses = openAndClosedCourses[1];
-
         // initialize the openCoursesListView, and the closedCoursesListView
-        openCoursesListView = new ListView<>(FXCollections.observableArrayList(openCourses));
-        closedCoursesListView = new ListView<>(FXCollections.observableArrayList(closedCourses));
+        openCoursesListView = new ListView<>();
+        closedCoursesListView = new ListView<>();
 
         // set the maximum height to the ListView
         openCoursesListView.setMaxHeight(150);
@@ -96,7 +90,6 @@ public class StudentPain extends BorderPane {
         openCoursesLabel.setContentDisplay(ContentDisplay.BOTTOM);
         Label closedCoursesLabel = new Label("Closed courses:", closedCoursesListView);
         closedCoursesLabel.setContentDisplay(ContentDisplay.BOTTOM);
-
 
 
         // Vbox for open and closed courses Lists View
@@ -122,7 +115,8 @@ public class StudentPain extends BorderPane {
         previousButton.setOnAction(e -> {
             // it will make the current student go to the back
             int currentStudentIndex = CommonClass.studentList.indexOf(currentStudent);
-            currentStudent = CommonClass.studentList.get(currentStudentIndex-1);
+            if (currentStudentIndex != 0) currentStudent = CommonClass.studentList.get(currentStudentIndex-1);
+            else currentStudent = CommonClass.studentList.get(CommonClass.studentList.size()-1);
             refreshListViews();
         });
 
@@ -130,7 +124,8 @@ public class StudentPain extends BorderPane {
         Button nextButton = new Button("Next>");
         nextButton.setOnAction(e -> {
             int currentStudentIndex = CommonClass.studentList.indexOf(currentStudent);
-            if (currentStudentIndex != CommonClass.studentList.size()) currentStudent = CommonClass.studentList.get(currentStudentIndex+1);
+            if (currentStudentIndex != CommonClass.studentList.size()-1) currentStudent = CommonClass.studentList.get(currentStudentIndex+1);
+            else currentStudent = CommonClass.studentList.get(0);
             refreshListViews();
         });
 
@@ -146,10 +141,16 @@ public class StudentPain extends BorderPane {
             // it will check for selectedCourseToDrop
         });
 
+        // a Button for adding student
+        Button addingStudentButton = new Button("Add Student");
+        addingStudentButton.setOnAction(e -> {
+            ArrayList<Course> registeredCourses = AddingStudentStage.display();
+            System.out.println(registeredCourses);
+        });
 
 
         // HBox for buttons
-        HBox buttonsHBox = new HBox(10, backButton, previousButton, nextButton, registerButton, dropButton);
+        HBox buttonsHBox = new HBox(10, backButton, previousButton, nextButton, registerButton, dropButton, addingStudentButton);
         buttonsHBox.setPadding(new Insets(20, 20, 20, 20));
         buttonsHBox.setAlignment(Pos.CENTER);
 
@@ -183,23 +184,23 @@ public class StudentPain extends BorderPane {
         studentCoursesListView.setItems(FXCollections.observableList(currentStudent.getCourses()));
 
         // it will refresh the closed and open courses list views
-        ArrayList<String>[] openAndClosedCourses = getOpenAndClosedCourses();
-        ArrayList<String> openCourses = openAndClosedCourses[0];
-        ArrayList<String> closedCourses = openAndClosedCourses[1];
-        openCoursesListView = new ListView<>(FXCollections.observableArrayList(openCourses));
-        closedCoursesListView = new ListView<>(FXCollections.observableArrayList(closedCourses));
+        ArrayList<Course>[] openAndClosedCourses = getOpenAndClosedCourses();
+        ArrayList<Course> openCourses = openAndClosedCourses[0];
+        ArrayList<Course> closedCourses = openAndClosedCourses[1];
+        openCoursesListView.setItems(FXCollections.observableList(openCourses));
+        closedCoursesListView.setItems(FXCollections.observableList(closedCourses));
 
         // it will refresh the text field
         currentStudentID.setText(currentStudent.getStudID());
     }
 
     // a function that returns a two Array list one for closed and one for open courses
-    private ArrayList<String>[] getOpenAndClosedCourses() {
-        ArrayList<String> openCoursesList = new ArrayList<>();
-        ArrayList<String> closedCoursesList = new ArrayList<>();
+    private ArrayList<Course>[] getOpenAndClosedCourses() {
+        ArrayList<Course> openCoursesList = new ArrayList<>();
+        ArrayList<Course> closedCoursesList = new ArrayList<>();
         for (Course course:CommonClass.courseList) {
-            if (course.getAvailableSeats() != 0) openCoursesList.add(course.toString());
-            else closedCoursesList.add(course.toString());
+            if (course.getAvailableSeats() != 0 && !currentStudent.getCourses().contains(course)) openCoursesList.add(course);
+            else closedCoursesList.add(course);
         }
         return new ArrayList[]{openCoursesList, closedCoursesList};
     }

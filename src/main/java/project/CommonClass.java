@@ -40,6 +40,7 @@ public class CommonClass {
         studentsPain = new StudentPain();
         coursesPain = new CoursePane();
     }
+
     // a function that save the data
     public static void saveData(){
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(FILE) )) {
@@ -52,6 +53,7 @@ public class CommonClass {
         }
     }
 
+    // a functions for setting the panes
     public static void setMainPain() {
         mainScene.setRoot(mainPain);
         primaryStage.setWidth(mainPain.WIDTH);
@@ -70,5 +72,4 @@ public class CommonClass {
         primaryStage.setHeight(coursesPain.HEIGHT);
         primaryStage.centerOnScreen();
     }
-
 }
