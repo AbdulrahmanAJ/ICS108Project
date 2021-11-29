@@ -72,4 +72,11 @@ public class CommonClass {
         primaryStage.setHeight(coursesPain.HEIGHT);
         primaryStage.centerOnScreen();
     }
+    public static void setAddingStudentPane() {
+        AddingStudentPane addingStudentPane = new AddingStudentPane();
+        mainScene.setRoot(addingStudentPane);
+        primaryStage.setWidth(addingStudentPane.WIDTH);
+        primaryStage.setHeight(addingStudentPane.HEIGHT);
+        primaryStage.centerOnScreen();
+    }
 }
