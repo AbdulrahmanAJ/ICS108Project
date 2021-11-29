@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class CoursePane extends BorderPane {
     public final double WIDTH = 900;
-    public final double HEIGHT = 700;
+    public final double HEIGHT = 500;
     Course currentCourse = CommonClass.courseList.get(0);
     ListView<Course> allCoursesListView = new ListView<>();
     ListView<String> courseStudentsListView;
@@ -40,6 +40,7 @@ public class CoursePane extends BorderPane {
                 refreshCoursePane();
             }
         });
+        allCoursesListView.setMinWidth(330);
 
         refreshCoursePane();
         // Add elements into the pane
@@ -95,8 +96,9 @@ public class CoursePane extends BorderPane {
 
     private VBox createRightVBox() {
         courseStudentsListView = new ListView<>();
+        courseStudentsListView.setMaxWidth(200);
         numberOfCourseStudents = new Text("Number of registered students is " + courseStudents(currentCourse).size());
-        VBox rightVBox = new VBox(courseStudentsListView, numberOfCourseStudents);
+        VBox rightVBox = new VBox(numberOfCourseStudents, courseStudentsListView);
         return rightVBox;
     }
 

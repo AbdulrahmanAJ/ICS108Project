@@ -12,8 +12,6 @@ public class CommonClass {
 	public static ArrayList<Course> courseList = new ArrayList<>();
     public static ArrayList<Student> studentList = new ArrayList<>();
     public static MainPain mainPain = new MainPain();
-    public static StudentPain studentsPain;
-    public static CoursePane coursesPain;
     public static Scene mainScene = new Scene(mainPain);
     public static Stage primaryStage;
 
@@ -37,8 +35,6 @@ public class CommonClass {
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        studentsPain = new StudentPain();
-        coursesPain = new CoursePane();
     }
 
     // a function that save the data
@@ -61,12 +57,14 @@ public class CommonClass {
         primaryStage.centerOnScreen();
     }
     public static void setStudentsPain() {
-        mainScene.setRoot(studentsPain);
-        primaryStage.setWidth(studentsPain.WIDTH);
-        primaryStage.setHeight(studentsPain.HEIGHT);
+        StudentPain studentPain = new StudentPain();
+        mainScene.setRoot(studentPain);
+        primaryStage.setWidth(studentPain.WIDTH);
+        primaryStage.setHeight(studentPain.HEIGHT);
         primaryStage.centerOnScreen();
     }
     public static void setCoursesPain() {
+        CoursePane coursesPain = new CoursePane();
         mainScene.setRoot(coursesPain);
         primaryStage.setWidth(coursesPain.WIDTH);
         primaryStage.setHeight(coursesPain.HEIGHT);
