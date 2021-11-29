@@ -1,101 +1,125 @@
 package project;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class StudentPain extends BorderPane {
     // the width and the height of the pane
-    public final double WIDTH = 800;
-    public final double HEIGHT = 550;
+    public final double WIDTH = 775;
+    public final double HEIGHT = 350;
     // current selected, student and courses
-    Student currentStudent = CommonClass.studentList.get(0);
-    Course selectedCourseToDrop;
-    Course selectedCourseToRegister;
-    ListView<Course> studentCoursesListView;
-    ListView<Course> openCoursesListView;
-    ListView<Course> closedCoursesListView;
-    Text currentStudentID;
+    private Student currentStudent = CommonClass.studentList.get(0);
+    private Course selectedCourseToDrop;
+    private Course selectedCourseToRegister;
+    private ListView<Course> studentCoursesListView;
+    private ListView<Course> openCoursesListView;
+    private Text currentStudentID;
 
     public StudentPain() {
         // fill the openCourses and the closedCourses
         HBox buttonsHBox = createButtonsHBox();
-        VBox studentVBox = new VBox(40,createSearchHBox(), createStudentVBox());
-        VBox coursesVBox = createCoursesVBox();
+        VBox studentVBox = new VBox(10,createSearchHBox(), createStudentVBox());
+        VBox coursesVBox = createCoursesListView();
 
-        refreshListViews();
+        refreshPane();
 
         // HBox for VBoxes
         HBox centerHBox = new HBox(25, coursesVBox, studentVBox);
-        centerHBox.setPadding(new Insets(20));
+        centerHBox.setPadding(new Insets(0));
         centerHBox.setAlignment((Pos.CENTER));
 
         // Add elements into the pane
-        this.setPadding(new Insets(20));
+        this.setPadding(new Insets(5,0,0,0));
         this.setBottom(buttonsHBox);
         this.setCenter(centerHBox);
     }
 
     // a function that fill the list with the open courses, and the closed courses
     private VBox createStudentVBox() {
+        // create an HBox for the current student id and next and previous
+
         // Label and text field for student ID
         currentStudentID = new Text();
+        currentStudentID.setFont(Font.font("A GOOGLE", FontWeight.EXTRA_BOLD, 15));
 
-        Label IdLabel = new Label("Student ID:", currentStudentID);
-        IdLabel.setContentDisplay(ContentDisplay.BOTTOM);
+        // create the label for the student id
+        Text idLabel = new Text("Student ID:");
+        idLabel.setFont(Font.font("A GOOGLE", 15));
+
+        // Vbox for the current Student
+        VBox studentIDInfoVBox = new VBox(2, idLabel, currentStudentID);
+        studentIDInfoVBox.setPadding(new Insets(0, 20, 0, 20));
+
+        // The previous button
+        Button previousButton = new Button("<Previous");
+        previousButton.setMinWidth(75);
+        previousButton.setMinHeight(50);
+        previousButton.setOnAction(e -> {
+            // it will make the current student go to the back
+            int currentStudentIndex = CommonClass.studentList.indexOf(currentStudent);
+            if (currentStudentIndex != 0) currentStudent = CommonClass.studentList.get(currentStudentIndex-1);
+            else currentStudent = CommonClass.studentList.get(CommonClass.studentList.size()-1);
+            refreshPane();
+        });
+
+        // The next button
+        Button nextButton = new Button("Next>");
+        nextButton.setMinWidth(75);
+        nextButton.setMinHeight(50);
+        nextButton.setOnAction(e -> {
+            int currentStudentIndex = CommonClass.studentList.indexOf(currentStudent);
+            if (currentStudentIndex != CommonClass.studentList.size()-1) currentStudent = CommonClass.studentList.get(currentStudentIndex+1);
+            else currentStudent = CommonClass.studentList.get(0);
+            refreshPane();
+        });
+
+        HBox studentIDHBox = new HBox(0, previousButton, studentIDInfoVBox, nextButton);
+        studentIDHBox.setAlignment(Pos.BOTTOM_CENTER);
 
         // Label and ListView for registered courses
         studentCoursesListView = new ListView<>();
         studentCoursesListView.setMinWidth(330);
-        studentCoursesListView.setMaxHeight(200);
+        studentCoursesListView.setMaxHeight(100);
 
-        Label courseLabel = new Label("Registered courses:", studentCoursesListView);
-        courseLabel.setContentDisplay(ContentDisplay.BOTTOM);
+        Text courseLabel = new Text("Registered Courses: ");
+        courseLabel.setFont(Font.font("A GOOGLE", 13));
+
+        VBox RegisteredCourseVBox = new VBox(0,courseLabel,studentCoursesListView);
 
         // Vbox for StudentID and registered Courses
-        VBox studentVbox = new VBox( IdLabel, courseLabel);
-
-//        studentVbox.setPadding(new Insets(10));
+        VBox studentVbox = new VBox(15, studentIDHBox, RegisteredCourseVBox);
         studentVbox.setAlignment(Pos.BOTTOM_CENTER);
 
         return studentVbox;
     }
 
     // a function that return a Vbox that contains the courses List Views
-    private VBox createCoursesVBox() {
+    private VBox createCoursesListView() {
         // initialize the openCoursesListView, and the closedCoursesListView
         openCoursesListView = new ListView<>();
-        closedCoursesListView = new ListView<>();
 
         // set the maximum height to the ListView
-        openCoursesListView.setMaxHeight(150);
-        closedCoursesListView.setMaxHeight(150);
+        openCoursesListView.setMaxHeight(220);
         openCoursesListView.setMinWidth(330);
-        closedCoursesListView.setMinWidth(330);
 
         // make the label for the listView
-        Label openCoursesLabel = new Label("Open courses:", openCoursesListView);
-        openCoursesLabel.setContentDisplay(ContentDisplay.BOTTOM);
-        Label closedCoursesLabel = new Label("Closed courses:", closedCoursesListView);
-        closedCoursesLabel.setContentDisplay(ContentDisplay.BOTTOM);
+        Text openCoursesLabel = new Text("Courses To Register: ");
+        openCoursesLabel.setFont(Font.font("A GOOGLE", 13));
 
 
         // Vbox for open and closed courses Lists View
-        VBox coursesVbox = new VBox(0, openCoursesLabel, closedCoursesLabel);
-        coursesVbox.setPadding(new Insets(10));
-        coursesVbox.setAlignment(Pos.CENTER);
+        VBox coursesVbox = new VBox(0, openCoursesLabel, openCoursesListView);
+        coursesVbox.setPadding(new Insets(5, 0,0,0));
+
 
         return coursesVbox;
     }
@@ -110,47 +134,36 @@ public class StudentPain extends BorderPane {
             currentStudent = CommonClass.studentList.get(1);
         });
 
-        // The previous button
-        Button previousButton = new Button("<Previous");
-        previousButton.setOnAction(e -> {
-            // it will make the current student go to the back
-            int currentStudentIndex = CommonClass.studentList.indexOf(currentStudent);
-            if (currentStudentIndex != 0) currentStudent = CommonClass.studentList.get(currentStudentIndex-1);
-            else currentStudent = CommonClass.studentList.get(CommonClass.studentList.size()-1);
-            refreshListViews();
-        });
-
-        // The next button
-        Button nextButton = new Button("Next>");
-        nextButton.setOnAction(e -> {
-            int currentStudentIndex = CommonClass.studentList.indexOf(currentStudent);
-            if (currentStudentIndex != CommonClass.studentList.size()-1) currentStudent = CommonClass.studentList.get(currentStudentIndex+1);
-            else currentStudent = CommonClass.studentList.get(0);
-            refreshListViews();
-        });
-
         // The register button
         Button registerButton = new Button("Register");
         registerButton.setOnAction(e -> {
             // it will check for selectedCourseToRegister
+            selectedCourseToRegister = openCoursesListView.getSelectionModel().getSelectedItem();
+            selectedCourseToRegister.register();
+            currentStudent.getCourses().add(selectedCourseToRegister);
+            refreshPane();
         });
 
         // The drop button
         Button dropButton = new Button("Drop");
         dropButton.setOnAction(e -> {
             // it will check for selectedCourseToDrop
+            selectedCourseToDrop = studentCoursesListView.getSelectionModel().getSelectedItem();
+            selectedCourseToDrop.drop();
+            currentStudent.getCourses().remove(selectedCourseToDrop);
+            refreshPane();
         });
 
         // a Button for adding student
         Button addingStudentButton = new Button("Add Student");
         addingStudentButton.setOnAction(e -> {
-            ArrayList<Course> registeredCourses = AddingStudentStage.display();
-            System.out.println(registeredCourses);
+            CommonClass.setAddingStudentPane();
+            refreshPane();
         });
 
 
         // HBox for buttons
-        HBox buttonsHBox = new HBox(10, backButton, previousButton, nextButton, registerButton, dropButton, addingStudentButton);
+        HBox buttonsHBox = new HBox(10, backButton, registerButton, dropButton, addingStudentButton);
         buttonsHBox.setPadding(new Insets(20, 20, 20, 20));
         buttonsHBox.setAlignment(Pos.CENTER);
 
@@ -167,7 +180,7 @@ public class StudentPain extends BorderPane {
             for (Student student:CommonClass.studentList){
                 if (searchIDTextField.getText().equals(student.getStudID())) currentStudent = student;
             }
-            refreshListViews();
+            refreshPane();
         });
 
         // creating the search HBox
@@ -179,29 +192,24 @@ public class StudentPain extends BorderPane {
     }
 
     // a function the refresh all the list views
-    private void refreshListViews() {
+    private void refreshPane() {
         // it will refresh the student courses
         studentCoursesListView.setItems(FXCollections.observableList(currentStudent.getCourses()));
 
         // it will refresh the closed and open courses list views
-        ArrayList<Course>[] openAndClosedCourses = getOpenAndClosedCourses();
-        ArrayList<Course> openCourses = openAndClosedCourses[0];
-        ArrayList<Course> closedCourses = openAndClosedCourses[1];
+        ArrayList<Course> openCourses = getOpenCourses();
         openCoursesListView.setItems(FXCollections.observableList(openCourses));
-        closedCoursesListView.setItems(FXCollections.observableList(closedCourses));
 
         // it will refresh the text field
         currentStudentID.setText(currentStudent.getStudID());
     }
 
     // a function that returns a two Array list one for closed and one for open courses
-    private ArrayList<Course>[] getOpenAndClosedCourses() {
+    private ArrayList<Course> getOpenCourses() {
         ArrayList<Course> openCoursesList = new ArrayList<>();
-        ArrayList<Course> closedCoursesList = new ArrayList<>();
         for (Course course:CommonClass.courseList) {
             if (course.getAvailableSeats() != 0 && !currentStudent.getCourses().contains(course)) openCoursesList.add(course);
-            else closedCoursesList.add(course);
         }
-        return new ArrayList[]{openCoursesList, closedCoursesList};
+        return openCoursesList;
     }
 }
