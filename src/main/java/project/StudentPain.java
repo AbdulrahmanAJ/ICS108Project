@@ -43,7 +43,7 @@ public class StudentPain extends BorderPane {
         this.setCenter(centerHBox);
     }
 
-    // a function that fill the list with the open courses, and the closed courses
+    // a function return a VBox with the next and previous buttons and current student ID and his registered courses
     private VBox createStudentVBox() {
         // create an HBox for the current student id and next and previous
 
@@ -64,7 +64,7 @@ public class StudentPain extends BorderPane {
         previousButton.setMinWidth(75);
         previousButton.setMinHeight(50);
         previousButton.setOnAction(e -> {
-            // it will make the current student go to the back
+            // To avoid IndexOutOfBounds exception
             int currentStudentIndex = CommonClass.studentList.indexOf(currentStudent);
             if (currentStudentIndex != 0) currentStudent = CommonClass.studentList.get(currentStudentIndex-1);
             else currentStudent = CommonClass.studentList.get(CommonClass.studentList.size()-1);
@@ -76,12 +76,14 @@ public class StudentPain extends BorderPane {
         nextButton.setMinWidth(75);
         nextButton.setMinHeight(50);
         nextButton.setOnAction(e -> {
+            // To avoid IndexOutOfBounds exception
             int currentStudentIndex = CommonClass.studentList.indexOf(currentStudent);
             if (currentStudentIndex != CommonClass.studentList.size()-1) currentStudent = CommonClass.studentList.get(currentStudentIndex+1);
             else currentStudent = CommonClass.studentList.get(0);
             refreshPane();
         });
 
+        // HBox for previous and next buttons and currentStudent ID
         HBox studentIDHBox = new HBox(0, previousButton, studentIDInfoVBox, nextButton);
         studentIDHBox.setAlignment(Pos.BOTTOM_CENTER);
 
@@ -95,7 +97,7 @@ public class StudentPain extends BorderPane {
 
         VBox RegisteredCourseVBox = new VBox(0,courseLabel,studentCoursesListView);
 
-        // Vbox for StudentID and registered Courses
+        // Vbox for the StudentID HBox and registered Courses VBox
         VBox studentVbox = new VBox(15, studentIDHBox, RegisteredCourseVBox);
         studentVbox.setAlignment(Pos.BOTTOM_CENTER);
 
@@ -104,7 +106,7 @@ public class StudentPain extends BorderPane {
 
     // a function that return a Vbox that contains the courses List Views
     private VBox createCoursesListView() {
-        // initialize the openCoursesListView, and the closedCoursesListView
+        // initialize the openCoursesListView
         openCoursesListView = new ListView<>();
 
         // set the maximum height to the ListView
@@ -116,7 +118,7 @@ public class StudentPain extends BorderPane {
         openCoursesLabel.setFont(Font.font("A GOOGLE", 13));
 
 
-        // Vbox for open and closed courses Lists View
+        // Vbox for open ListView
         VBox coursesVbox = new VBox(0, openCoursesLabel, openCoursesListView);
         coursesVbox.setPadding(new Insets(5, 0,0,0));
 
@@ -124,7 +126,7 @@ public class StudentPain extends BorderPane {
         return coursesVbox;
     }
 
-    // a function that return a Vbox that contains the studentIDTextField and the Student courses List View
+    // a function that return the HBox for the buttons in the bottom
     private HBox createButtonsHBox() {
         // the back button
         Button backButton = new Button("Back");
@@ -196,7 +198,7 @@ public class StudentPain extends BorderPane {
         // it will refresh the student courses
         studentCoursesListView.setItems(FXCollections.observableList(currentStudent.getCourses()));
 
-        // it will refresh the closed and open courses list views
+        // it will refresh the open courses list view
         ArrayList<Course> openCourses = getOpenCourses();
         openCoursesListView.setItems(FXCollections.observableList(openCourses));
 
@@ -204,7 +206,7 @@ public class StudentPain extends BorderPane {
         currentStudentID.setText(currentStudent.getStudID());
     }
 
-    // a function that returns a two Array list one for closed and one for open courses
+    // a function that returns an ArrayList of courses available for registration
     private ArrayList<Course> getOpenCourses() {
         ArrayList<Course> openCoursesList = new ArrayList<>();
         for (Course course:CommonClass.courseList) {
