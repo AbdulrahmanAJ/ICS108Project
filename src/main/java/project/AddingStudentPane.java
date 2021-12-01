@@ -37,14 +37,14 @@ public class AddingStudentPane extends BorderPane {
         Label studentIDLabel = new Label("Student ID:", studentIDTextField);
         studentIDLabel.setContentDisplay(ContentDisplay.BOTTOM);
 
-        // a listView for the
+        // a listView for the courses of the student
         studentCoursesListView = new ListView<>();
         studentCoursesListView.setItems(FXCollections.observableList(getOpenCourses()));
         studentCoursesListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         studentCoursesListView.setMaxHeight(220);
         studentCoursesListView.setMinWidth(330);
 
-
+        // Label for ListView of the student's courses
         Label studentCoursesLabel = new Label("Available Courses:", studentCoursesListView);
         studentCoursesLabel.setContentDisplay(ContentDisplay.BOTTOM);
 

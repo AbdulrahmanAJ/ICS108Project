@@ -176,7 +176,8 @@ public class StudentPain extends BorderPane {
     private HBox createSearchHBox() {
 
         // an HBox for searching in the students
-        TextField searchIDTextField = new TextField("Enter Student ID:");
+        TextField searchIDTextField = new TextField();
+        searchIDTextField.setPromptText("Enter Student ID");
         Button searchButton = new Button("Search");
         searchButton.setOnAction(e -> {
             for (Student student:CommonClass.studentList){

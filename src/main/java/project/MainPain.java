@@ -27,7 +27,7 @@ public class MainPain extends BorderPane {
         this.setBottom(buttonsHBox);
     }
 
-    // a function that create the buttons vbox
+    // a function that create the buttons HBox
     private HBox createButtonsHBox() {
         // create the buttons and set the actions for the buttons
         Button coursesButton = new Button("View courses");
