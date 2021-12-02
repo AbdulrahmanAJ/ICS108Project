@@ -3,7 +3,6 @@ package project;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -12,7 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
@@ -179,17 +177,6 @@ public class CoursePane extends BorderPane {
 
         return searchHBox;
     }
-
-    // a function that takes a course and return a list of a students, that are taking the course
-//    private ArrayList<Student> courseStudents(Course course) {
-//        ArrayList<Student> courseStudents = new ArrayList<>();
-//        for (Student student: CommonClass.studentList){
-//            if (student.getCourses().contains(course)){
-//                courseStudents.add(student);
-//            }
-//        }
-//        return courseStudents;
-//    }
 
     private ArrayList<String> courseStudents(Course course) {
         ArrayList<String> courseStudents = new ArrayList<>();
