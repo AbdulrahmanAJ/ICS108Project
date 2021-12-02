@@ -33,7 +33,7 @@ public class CoursePane extends BorderPane {
     Text currentCourseStatus;
 
     public CoursePane() {
-        HBox buttonsHBox = createButtonsHBox();
+        HBox buttonsHBox = createBackButtonHBox();
         VBox centralVBox = createCentralVBox();
         VBox rightVBox = createRightVBox();
         allCoursesListView.setItems(FXCollections.observableList(CommonClass.courseList));
@@ -59,11 +59,31 @@ public class CoursePane extends BorderPane {
         Font courseLabelsFont = Font.font("A GOOGLE", FontWeight.BOLD, 17);
         Font courseFieldsFont = Font.font("A GOOGLE", 14);
 
+        Button previousButton = new Button("<Previous");
+        previousButton.setOnAction(e -> {
+            // it will make the current student go to the back
+            int currentCourseIndex = CommonClass.courseList.indexOf(currentCourse);
+            if (currentCourseIndex != 0) currentCourse = CommonClass.courseList.get(currentCourseIndex-1);
+            else currentCourse = CommonClass.courseList.get(CommonClass.courseList.size()-1);
+            refreshCoursePane();
+        });
+        // The next button
+        Button nextButton = new Button("Next>");
+        nextButton.setOnAction(e -> {
+            int currentCourseIndex = CommonClass.courseList.indexOf(currentCourse);
+            if (currentCourseIndex != CommonClass.courseList.size()-1) currentCourse = CommonClass.courseList.get(currentCourseIndex+1);
+            else currentCourse = CommonClass.courseList.get(0);
+            refreshCoursePane();
+        });
+
         currentCourseID = new Text();
         currentCourseID.setFont(courseFieldsFont);
         Label courseIdentificationLabel = new Label("Course ID:", currentCourseID);
         courseIdentificationLabel.setContentDisplay(ContentDisplay.RIGHT);
         courseIdentificationLabel.setFont(courseLabelsFont);
+
+        HBox courseIdentificationHBox = new HBox(10, previousButton, courseIdentificationLabel, nextButton);
+        courseIdentificationHBox.setAlignment(Pos.CENTER);
 
         currentCourseName = new Text();
         currentCourseName.setFont(courseFieldsFont);
@@ -85,15 +105,11 @@ public class CoursePane extends BorderPane {
 
         currentCourseStatus = new Text();
         currentCourseStatus.setFont(courseFieldsFont);
-        if (currentCourseStatus.equals("Open"))
-            currentCourseStatus.setFill(Color.GREEN);
-        else
-            currentCourseStatus.setFill(Color.RED);
         Label courseStatusLabel = new Label("Course status:", currentCourseStatus);
         courseStatusLabel.setContentDisplay(ContentDisplay.RIGHT);
         courseStatusLabel.setFont(courseLabelsFont);
 
-        VBox centralVBox = new VBox(createSearchHBox(), courseIdentificationLabel, courseNameLabel, courseDaysLabel,
+        VBox centralVBox = new VBox(createSearchHBox(), courseIdentificationHBox, courseNameLabel, courseDaysLabel,
                 courseTimeLabel, courseStatusLabel);
         centralVBox.setAlignment(Pos.CENTER);
         return centralVBox;
@@ -107,10 +123,14 @@ public class CoursePane extends BorderPane {
         currentCourseTime.setText(currentCourse.getCourseTime());
         courseStudentsListView.setItems(FXCollections.observableList(courseStudents(currentCourse)));
         numberOfCourseStudents.setText("Number of registered students is " + courseStudents(currentCourse).size());
-        if (currentCourse.getAvailableSeats() == 0)
+        if (currentCourse.getAvailableSeats() == 0) {
             currentCourseStatus.setText("Closed");
-        else
+            currentCourseStatus.setFill(Color.RED);
+        }
+        else {
             currentCourseStatus.setText("Open");
+            currentCourseStatus.setFill(Color.GREEN);
+        }
     }
 
     private VBox createRightVBox() {
@@ -122,7 +142,7 @@ public class CoursePane extends BorderPane {
         return rightVBox;
     }
 
-    private HBox createButtonsHBox() {
+    private HBox createBackButtonHBox() {
         // the back button
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> {
@@ -130,31 +150,13 @@ public class CoursePane extends BorderPane {
             CommonClass.setMainPain();
         });
 
-        // The previous button
-        Button previousButton = new Button("<Previous");
-        previousButton.setOnAction(e -> {
-            // it will make the current student go to the back
-            int currentCourseIndex = CommonClass.courseList.indexOf(currentCourse);
-            if (currentCourseIndex != 0) currentCourse = CommonClass.courseList.get(currentCourseIndex-1);
-            else currentCourse = CommonClass.courseList.get(CommonClass.courseList.size()-1);
-            refreshCoursePane();
-        });
-        // The next button
-        Button nextButton = new Button("Next>");
-        nextButton.setOnAction(e -> {
-            int currentCourseIndex = CommonClass.courseList.indexOf(currentCourse);
-            if (currentCourseIndex != CommonClass.courseList.size()-1) currentCourse = CommonClass.courseList.get(currentCourseIndex+1);
-            else currentCourse = CommonClass.courseList.get(0);
-            refreshCoursePane();
-        });
-
         // HBox for buttons
-        HBox buttonsHBox = new HBox(10, backButton, previousButton, nextButton);
-        buttonsHBox.setPadding(new Insets(20, 20, 20, 150));
+        HBox backButtonHBox = new HBox(10, backButton);
+        backButtonHBox.setPadding(new Insets(20, 20, 20, 150));
 
-        buttonsHBox.setAlignment(Pos.CENTER);
+        backButtonHBox.setAlignment(Pos.CENTER);
 
-        return buttonsHBox;
+        return backButtonHBox;
     }
 
     private HBox createSearchHBox() {
