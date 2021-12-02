@@ -10,13 +10,17 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 
 import java.util.ArrayList;
 
 public class CoursePane extends BorderPane {
-    public final double WIDTH = 900;
+    public final double WIDTH = 1100;
     public final double HEIGHT = 500;
     Course currentCourse = CommonClass.courseList.get(0);
     ListView<Course> allCoursesListView = new ListView<>();
@@ -52,27 +56,42 @@ public class CoursePane extends BorderPane {
     }
 
     private VBox createCentralVBox() {
-
+        Font courseLabelsFont = Font.font("A GOOGLE", FontWeight.BOLD, 17);
+        Font courseFieldsFont = Font.font("A GOOGLE", 14);
 
         currentCourseID = new Text();
+        currentCourseID.setFont(courseFieldsFont);
         Label courseIdentificationLabel = new Label("Course ID:", currentCourseID);
         courseIdentificationLabel.setContentDisplay(ContentDisplay.RIGHT);
+        courseIdentificationLabel.setFont(courseLabelsFont);
 
         currentCourseName = new Text();
+        currentCourseName.setFont(courseFieldsFont);
         Label courseNameLabel = new Label("Course name:", currentCourseName);
         courseNameLabel.setContentDisplay(ContentDisplay.RIGHT);
+        courseNameLabel.setFont(courseLabelsFont);
 
         currentCourseDays = new Text();
+        currentCourseDays.setFont(courseFieldsFont);
         Label courseDaysLabel = new Label("Course days:", currentCourseDays);
         courseDaysLabel.setContentDisplay(ContentDisplay.RIGHT);
+        courseDaysLabel.setFont(courseLabelsFont);
 
         currentCourseTime = new Text();
+        currentCourseTime.setFont(courseFieldsFont);
         Label courseTimeLabel = new Label("Course time:", currentCourseTime);
         courseTimeLabel.setContentDisplay(ContentDisplay.RIGHT);
+        courseTimeLabel.setFont(courseLabelsFont);
 
         currentCourseStatus = new Text();
+        currentCourseStatus.setFont(courseFieldsFont);
+        if (currentCourseStatus.equals("Open"))
+            currentCourseStatus.setFill(Color.GREEN);
+        else
+            currentCourseStatus.setFill(Color.RED);
         Label courseStatusLabel = new Label("Course status:", currentCourseStatus);
         courseStatusLabel.setContentDisplay(ContentDisplay.RIGHT);
+        courseStatusLabel.setFont(courseLabelsFont);
 
         VBox centralVBox = new VBox(createSearchHBox(), courseIdentificationLabel, courseNameLabel, courseDaysLabel,
                 courseTimeLabel, courseStatusLabel);
@@ -98,6 +117,7 @@ public class CoursePane extends BorderPane {
         courseStudentsListView = new ListView<>();
         courseStudentsListView.setMaxWidth(200);
         numberOfCourseStudents = new Text("Number of registered students is " + courseStudents(currentCourse).size());
+        numberOfCourseStudents.setFont(Font.font("A GOOGLE", FontWeight.BOLD, 12));
         VBox rightVBox = new VBox(numberOfCourseStudents, courseStudentsListView);
         return rightVBox;
     }
@@ -130,7 +150,8 @@ public class CoursePane extends BorderPane {
 
         // HBox for buttons
         HBox buttonsHBox = new HBox(10, backButton, previousButton, nextButton);
-        buttonsHBox.setPadding(new Insets(20, 20, 20, 20));
+        buttonsHBox.setPadding(new Insets(20, 20, 20, 150));
+
         buttonsHBox.setAlignment(Pos.CENTER);
 
         return buttonsHBox;
@@ -139,7 +160,8 @@ public class CoursePane extends BorderPane {
     private HBox createSearchHBox() {
 
         // an HBox for searching in the courses
-        TextField searchIDTextField = new TextField("Enter Course ID:");
+        TextField searchIDTextField = new TextField();
+        searchIDTextField.setPromptText("Enter course ID:");
         Button searchButton = new Button("Search");
         searchButton.setOnAction(e -> {
             for (Course course:CommonClass.courseList){
