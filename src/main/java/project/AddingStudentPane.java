@@ -21,7 +21,6 @@ public class AddingStudentPane extends BorderPane {
     private TextField studentIDTextField;
     private ListView<Course> studentCoursesListView;
 
-
     public AddingStudentPane() {
         VBox studentVBox = createStudentVBox();
         HBox buttonsHBox = createButtonsHBox();
@@ -31,7 +30,7 @@ public class AddingStudentPane extends BorderPane {
         this.setPadding(new Insets(5));
     }
 
-    private VBox createStudentVBox(){
+    private VBox createStudentVBox() {
         // a text field and a label for the student id
         studentIDTextField = new TextField("Ex. 201915320");
         Label studentIDLabel = new Label("Student ID:", studentIDTextField);

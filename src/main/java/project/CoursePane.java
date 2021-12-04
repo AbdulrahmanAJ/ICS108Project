@@ -18,10 +18,10 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 
 public class CoursePane extends BorderPane {
-    public final double WIDTH = 1100;
+    public final double WIDTH = 1075;
     public final double HEIGHT = 500;
     Course currentCourse = CommonClass.courseList.get(0);
-    ListView<Course> allCoursesListView = new ListView<>();
+    ListView<Course> allCoursesListView;
     ListView<String> courseStudentsListView;
     Text currentCourseID;
     Text currentCourseName;
@@ -31,28 +31,33 @@ public class CoursePane extends BorderPane {
     Text currentCourseStatus;
 
     public CoursePane() {
-        HBox buttonsHBox = createBackButtonHBox();
+        HBox buttonsHBox = createButtonsHBox();
         VBox centralVBox = createCentralVBox();
         VBox rightVBox = createRightVBox();
-        allCoursesListView.setItems(FXCollections.observableList(CommonClass.courseList));
-        allCoursesListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
-            @Override
-            public void changed(ObservableValue<? extends Course> observableValue, Course course, Course selectedCourse) {
-                currentCourse = selectedCourse;
-                refreshCoursePane();
-            }
-        });
-        allCoursesListView.setMinWidth(330);
+        VBox liftVBox = createLeftVBox();
 
         refreshCoursePane();
         // Add elements into the pane
         this.setPadding(new Insets(20));
         this.setBottom(buttonsHBox);
-        this.setLeft(allCoursesListView);
+        this.setLeft(liftVBox);
         this.setCenter(centralVBox);
         this.setRight(rightVBox);
     }
 
+    // a functions that create HBox for the nodes that in the left
+    private VBox createLeftVBox() {
+        allCoursesListView = new ListView<>();
+        allCoursesListView.setItems(FXCollections.observableList(CommonClass.courseList));
+        allCoursesListView.getSelectionModel().selectedItemProperty().addListener((observableValue, course, selectedCourse) -> {
+            currentCourse = selectedCourse;
+            refreshCoursePane();
+        });
+        allCoursesListView.setMinWidth(330);
+        return new VBox(allCoursesListView);
+    }
+
+    // a functions that create HBox for the nodes that in the center
     private VBox createCentralVBox() {
         Font courseLabelsFont = Font.font("A GOOGLE", FontWeight.BOLD, 17);
         Font courseFieldsFont = Font.font("A GOOGLE", 14);
@@ -131,6 +136,7 @@ public class CoursePane extends BorderPane {
         }
     }
 
+    // a functions that create HBox for the nodes that in the right
     private VBox createRightVBox() {
         courseStudentsListView = new ListView<>();
         courseStudentsListView.setMaxWidth(200);
@@ -140,7 +146,8 @@ public class CoursePane extends BorderPane {
         return rightVBox;
     }
 
-    private HBox createBackButtonHBox() {
+    // a functions that create a buttons HBox
+    private HBox createButtonsHBox() {
         // the back button
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> {
@@ -157,8 +164,8 @@ public class CoursePane extends BorderPane {
         return backButtonHBox;
     }
 
+    // a function that returns an HBox with the search nodes
     private HBox createSearchHBox() {
-
         // an HBox for searching in the courses
         TextField searchIDTextField = new TextField();
         searchIDTextField.setPromptText("Enter course ID:");
@@ -178,6 +185,7 @@ public class CoursePane extends BorderPane {
         return searchHBox;
     }
 
+    // a function that returns a list of the students that taking the course
     private ArrayList<String> courseStudents(Course course) {
         ArrayList<String> courseStudents = new ArrayList<>();
         for (Student student: CommonClass.studentList){
@@ -187,5 +195,4 @@ public class CoursePane extends BorderPane {
         }
         return courseStudents;
     }
-
 }
