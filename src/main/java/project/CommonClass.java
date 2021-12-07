@@ -55,6 +55,7 @@ public class CommonClass {
         primaryStage.setWidth(mainPane.WIDTH);
         primaryStage.setHeight(mainPane.HEIGHT);
         primaryStage.centerOnScreen();
+        primaryStage.setTitle("Home Page");
     }
     public static void setStudentsPane() {
         StudentPane studentPane = new StudentPane();
@@ -62,6 +63,7 @@ public class CommonClass {
         primaryStage.setWidth(studentPane.WIDTH);
         primaryStage.setHeight(studentPane.HEIGHT);
         primaryStage.centerOnScreen();
+        primaryStage.setTitle("Students Page");
     }
     public static void setCoursesPane() {
         CoursePane coursesPane = new CoursePane();
@@ -69,6 +71,7 @@ public class CommonClass {
         primaryStage.setWidth(coursesPane.WIDTH);
         primaryStage.setHeight(coursesPane.HEIGHT);
         primaryStage.centerOnScreen();
+        primaryStage.setTitle("Courses Page");
     }
     public static void setAddingStudentPane() {
         AddingStudentPane addingStudentPane = new AddingStudentPane();
@@ -76,6 +79,7 @@ public class CommonClass {
         primaryStage.setWidth(addingStudentPane.WIDTH);
         primaryStage.setHeight(addingStudentPane.HEIGHT);
         primaryStage.centerOnScreen();
+        primaryStage.setTitle("Add Student Page");
     }
 
     // a function that starts the program
@@ -84,6 +88,7 @@ public class CommonClass {
         primaryStage.setScene(CommonClass.mainScene);
         primaryStage.setResizable(false);
         // Saves the data when the program is closed
-        primaryStage.setOnCloseRequest(e -> {CommonClass.saveData();});
+        primaryStage.setOnCloseRequest(e -> CommonClass.saveData());
+        setMainPane();
     }
 }
