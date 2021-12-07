@@ -18,8 +18,11 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 
 public class CoursePane extends BorderPane {
+    // the width and the height of the pane
     public final double WIDTH = 1075;
     public final double HEIGHT = 500;
+
+    // common variables between the functions
     Course currentCourse = CommonClass.courseList.get(0);
     ListView<Course> allCoursesListView;
     ListView<String> courseStudentsListView;
@@ -27,16 +30,18 @@ public class CoursePane extends BorderPane {
     Text currentCourseName;
     Text currentCourseDays;
     Text currentCourseTime;
-    Text numberOfCourseStudents;
     Text currentCourseStatus;
+    Text numberOfCourseStudents;
 
+    // A constructor for the course pane
     public CoursePane() {
+        // create the nodes
         HBox buttonsHBox = createButtonsHBox();
         VBox centralVBox = createCentralVBox();
         VBox rightVBox = createRightVBox();
         VBox liftVBox = createLeftVBox();
-
         refreshCoursePane();
+
         // Add elements into the pane
         this.setPadding(new Insets(20));
         this.setBottom(buttonsHBox);
@@ -49,7 +54,7 @@ public class CoursePane extends BorderPane {
     private VBox createLeftVBox() {
         allCoursesListView = new ListView<>();
         allCoursesListView.setItems(FXCollections.observableList(CommonClass.courseList));
-        allCoursesListView.getSelectionModel().selectedItemProperty().addListener((observableValue, course, selectedCourse) -> {
+        allCoursesListView.getSelectionModel().selectedItemProperty().addListener( (observableValue, course, selectedCourse) -> {
             currentCourse = selectedCourse;
             refreshCoursePane();
         });
@@ -59,23 +64,27 @@ public class CoursePane extends BorderPane {
 
     // a functions that create HBox for the nodes that in the center
     private VBox createCentralVBox() {
+        // Fonts for the texts
         Font courseLabelsFont = Font.font("A GOOGLE", FontWeight.BOLD, 17);
         Font courseFieldsFont = Font.font("A GOOGLE", 14);
 
+        // the previous and next buttons, course id, and their HBox
         Button previousButton = new Button("<Previous");
         previousButton.setOnAction(e -> {
-            // it will make the current student go to the back
             int currentCourseIndex = CommonClass.courseList.indexOf(currentCourse);
-            if (currentCourseIndex != 0) currentCourse = CommonClass.courseList.get(currentCourseIndex-1);
-            else currentCourse = CommonClass.courseList.get(CommonClass.courseList.size()-1);
+            // To avoid IndexOutOfBounds exception
+            int previousCourseIndex = (currentCourseIndex-1+CommonClass.courseList.size()) % CommonClass.courseList.size();
+            currentCourse = CommonClass.courseList.get(previousCourseIndex);
+
             refreshCoursePane();
         });
-        // The next button
         Button nextButton = new Button("Next>");
         nextButton.setOnAction(e -> {
             int currentCourseIndex = CommonClass.courseList.indexOf(currentCourse);
-            if (currentCourseIndex != CommonClass.courseList.size()-1) currentCourse = CommonClass.courseList.get(currentCourseIndex+1);
-            else currentCourse = CommonClass.courseList.get(0);
+            // To avoid IndexOutOfBounds exception
+            int nextCourseIndex = (currentCourseIndex+1+CommonClass.courseList.size()) % CommonClass.courseList.size();
+            currentCourse = CommonClass.courseList.get(nextCourseIndex);
+
             refreshCoursePane();
         });
 
@@ -88,6 +97,7 @@ public class CoursePane extends BorderPane {
         HBox courseIdentificationHBox = new HBox(10, previousButton, courseIdentificationLabel, nextButton);
         courseIdentificationHBox.setAlignment(Pos.CENTER);
 
+        // create the courses' data texts
         currentCourseName = new Text();
         currentCourseName.setFont(courseFieldsFont);
         Label courseNameLabel = new Label("Course name:", currentCourseName);
@@ -112,20 +122,22 @@ public class CoursePane extends BorderPane {
         courseStatusLabel.setContentDisplay(ContentDisplay.RIGHT);
         courseStatusLabel.setFont(courseLabelsFont);
 
-        VBox centralVBox = new VBox(createSearchHBox(), courseIdentificationHBox, courseNameLabel, courseDaysLabel,
-                courseTimeLabel, courseStatusLabel);
+        VBox centralVBox = new VBox(createSearchHBox(), courseIdentificationHBox, courseNameLabel, courseDaysLabel, courseTimeLabel, courseStatusLabel);
         centralVBox.setAlignment(Pos.CENTER);
+
         return centralVBox;
     }
 
     // a function that refresh the pane
     private void refreshCoursePane() {
+        allCoursesListView.getSelectionModel().select(currentCourse);
         currentCourseID.setText(currentCourse.getCourseID());
         currentCourseName.setText(currentCourse.getCourseName());
         currentCourseDays.setText(currentCourse.getCourseDays());
         currentCourseTime.setText(currentCourse.getCourseTime());
         courseStudentsListView.setItems(FXCollections.observableList(courseStudents(currentCourse)));
         numberOfCourseStudents.setText("Number of registered students is " + courseStudents(currentCourse).size());
+        // set the status of the course closed when there are no available seats
         if (currentCourse.getAvailableSeats() == 0) {
             currentCourseStatus.setText("Closed");
             currentCourseStatus.setFill(Color.RED);
@@ -140,9 +152,11 @@ public class CoursePane extends BorderPane {
     private VBox createRightVBox() {
         courseStudentsListView = new ListView<>();
         courseStudentsListView.setMaxWidth(200);
-        numberOfCourseStudents = new Text("Number of registered students is " + courseStudents(currentCourse).size());
+        numberOfCourseStudents = new Text();
         numberOfCourseStudents.setFont(Font.font("A GOOGLE", FontWeight.BOLD, 12));
+
         VBox rightVBox = new VBox(numberOfCourseStudents, courseStudentsListView);
+
         return rightVBox;
     }
 
@@ -152,13 +166,12 @@ public class CoursePane extends BorderPane {
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> {
             // when the button is pressed the pane will change to the mane pane
-            CommonClass.setMainPain();
+            CommonClass.setMainPane();
         });
 
         // HBox for buttons
-        HBox backButtonHBox = new HBox(10, backButton);
-        backButtonHBox.setPadding(new Insets(20, 20, 20, 150));
-
+        HBox backButtonHBox = new HBox(backButton);
+        backButtonHBox.setPadding(new Insets(0, 0, 0, 130));
         backButtonHBox.setAlignment(Pos.CENTER);
 
         return backButtonHBox;

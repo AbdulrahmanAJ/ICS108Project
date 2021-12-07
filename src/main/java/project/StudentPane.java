@@ -11,25 +11,23 @@ import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
-
-public class StudentPain extends BorderPane {
+public class StudentPane extends BorderPane {
     // the width and the height of the pane
     public final double WIDTH = 775;
     public final double HEIGHT = 350;
-    // current selected, student and courses
+
+    // current student and courses
     private Student currentStudent = CommonClass.studentList.get(0);
-    private Course selectedCourseToDrop;
-    private Course selectedCourseToRegister;
     private ListView<Course> studentCoursesListView;
     private ListView<Course> openCoursesListView;
     private Text currentStudentID;
 
-    public StudentPain() {
+    // A constructor for the student pane
+    public StudentPane() {
         // fill the openCourses and the closedCourses
         HBox buttonsHBox = createButtonsHBox();
         VBox studentVBox = new VBox(10,createSearchHBox(), createStudentVBox());
         VBox coursesVBox = createCoursesListView();
-
         refreshPane();
 
         // HBox for VBoxes
@@ -46,7 +44,6 @@ public class StudentPain extends BorderPane {
     // a function return a VBox with the next and previous buttons and current student ID and his registered courses
     private VBox createStudentVBox() {
         // create an HBox for the current student id and next and previous
-
         // Label and text field for student ID
         currentStudentID = new Text();
         currentStudentID.setFont(Font.font("A GOOGLE", FontWeight.EXTRA_BOLD, 15));
@@ -64,10 +61,11 @@ public class StudentPain extends BorderPane {
         previousButton.setMinWidth(75);
         previousButton.setMinHeight(50);
         previousButton.setOnAction(e -> {
-            // To avoid IndexOutOfBounds exception
             int currentStudentIndex = CommonClass.studentList.indexOf(currentStudent);
-            if (currentStudentIndex != 0) currentStudent = CommonClass.studentList.get(currentStudentIndex-1);
-            else currentStudent = CommonClass.studentList.get(CommonClass.studentList.size()-1);
+            // To avoid IndexOutOfBounds exception
+            int previousStudentIndex = (currentStudentIndex-1+CommonClass.studentList.size()) % CommonClass.studentList.size();
+            currentStudent = CommonClass.studentList.get(previousStudentIndex);
+
             refreshPane();
         });
 
@@ -76,10 +74,11 @@ public class StudentPain extends BorderPane {
         nextButton.setMinWidth(75);
         nextButton.setMinHeight(50);
         nextButton.setOnAction(e -> {
-            // To avoid IndexOutOfBounds exception
             int currentStudentIndex = CommonClass.studentList.indexOf(currentStudent);
-            if (currentStudentIndex != CommonClass.studentList.size()-1) currentStudent = CommonClass.studentList.get(currentStudentIndex+1);
-            else currentStudent = CommonClass.studentList.get(0);
+            // To avoid IndexOutOfBounds exception
+            int nextStudentIndex = (currentStudentIndex+1+CommonClass.studentList.size()) % CommonClass.studentList.size();
+            currentStudent = CommonClass.studentList.get(nextStudentIndex);
+
             refreshPane();
         });
 
@@ -131,16 +130,15 @@ public class StudentPain extends BorderPane {
         // the back button
         Button backButton = new Button("Back");
         backButton.setOnAction(e -> {
-            // when the button is pressed the pane will change to the mane pane
-            CommonClass.setMainPain();
-            currentStudent = CommonClass.studentList.get(1);
+            // when the button is pressed the pane will change to the Main pane
+            CommonClass.setMainPane();
         });
 
         // The register button
         Button registerButton = new Button("Register");
         registerButton.setOnAction(e -> {
             // it will check for selectedCourseToRegister
-            selectedCourseToRegister = openCoursesListView.getSelectionModel().getSelectedItem();
+            Course selectedCourseToRegister = openCoursesListView.getSelectionModel().getSelectedItem();
             selectedCourseToRegister.register();
             currentStudent.getCourses().add(selectedCourseToRegister);
             refreshPane();
@@ -150,19 +148,17 @@ public class StudentPain extends BorderPane {
         Button dropButton = new Button("Drop");
         dropButton.setOnAction(e -> {
             // it will check for selectedCourseToDrop
-            selectedCourseToDrop = studentCoursesListView.getSelectionModel().getSelectedItem();
+            Course selectedCourseToDrop = studentCoursesListView.getSelectionModel().getSelectedItem();
             selectedCourseToDrop.drop();
             currentStudent.getCourses().remove(selectedCourseToDrop);
             refreshPane();
         });
 
-        // a Button for adding student
+        // a Button to transfer to the add student pane
         Button addingStudentButton = new Button("Add Student");
         addingStudentButton.setOnAction(e -> {
             CommonClass.setAddingStudentPane();
-            refreshPane();
         });
-
 
         // HBox for buttons
         HBox buttonsHBox = new HBox(10, backButton, registerButton, dropButton, addingStudentButton);
@@ -174,7 +170,6 @@ public class StudentPain extends BorderPane {
 
     // a function that creates the search HBox, and changes the current students
     private HBox createSearchHBox() {
-
         // an HBox for searching in the students
         TextField searchIDTextField = new TextField();
         searchIDTextField.setPromptText("Enter Student ID");
@@ -183,6 +178,7 @@ public class StudentPain extends BorderPane {
             for (Student student:CommonClass.studentList){
                 if (searchIDTextField.getText().equals(student.getStudID())) currentStudent = student;
             }
+
             refreshPane();
         });
 

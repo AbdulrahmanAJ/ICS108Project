@@ -10,13 +10,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 
-public class MainPain extends BorderPane {
+public class MainPane extends BorderPane {
     // initialize the main variables
-    public final double WIDTH = 600.0;
+    public final double WIDTH = 600;
     public final double HEIGHT = 255;
 
     // the constructor for the main pain
-    public MainPain() {
+    public MainPane() {
         // create the buttons and the texts
         HBox buttonsHBox = createButtonsHBox();
         VBox textsVBox = createTextVbox();
@@ -32,13 +32,12 @@ public class MainPain extends BorderPane {
         // create the buttons and set the actions for the buttons
         Button coursesButton = new Button("View courses");
         coursesButton.setOnAction(e -> {
-            CommonClass.setCoursesPain();
+            CommonClass.setCoursesPane();
         });
 
         Button studentsButton = new Button("View students Details");
         studentsButton.setOnAction(e -> {
-            CommonClass.setStudentsPain();
-
+            CommonClass.setStudentsPane();
         });
 
         Button saveButton = new Button("Save");
@@ -53,15 +52,15 @@ public class MainPain extends BorderPane {
         return buttonsHBox;
     }
 
-    // a function that create the text vbox
+    // a function that create the text VBox
     private VBox createTextVbox(){
         // make the main text and the set the font
         Text mainText = new Text("Registration System");
         mainText.setFont(new Font("A GOOGLE", 35));
 
         // make the description of the system
-        Text descriptionText = new Text("A system that makes you able to view the students and the courses,\n" +
-                "with the ability of editing them.");
+        Text descriptionText = new Text("A program that enables the user to add students to a list,\n" +
+                "view their courses, register these courses and drop them.");
         descriptionText.setFont(new Font("A GOOGLE", 15));
 
         // make a vBox and insert the texts init
