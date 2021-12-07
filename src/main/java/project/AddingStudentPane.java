@@ -34,7 +34,8 @@ public class AddingStudentPane extends BorderPane {
     // a function that return the VBox for the Adding student nodes
     private VBox createStudentVBox() {
         // a text field and a label for the student id
-        studentIDTextField = new TextField("Ex. 201915320");
+        studentIDTextField = new TextField();
+        studentIDTextField.setPromptText("Ex. 201915320");
         Label studentIDLabel = new Label("Student ID:", studentIDTextField);
         studentIDLabel.setContentDisplay(ContentDisplay.BOTTOM);
 
