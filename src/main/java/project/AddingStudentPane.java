@@ -28,7 +28,7 @@ public class AddingStudentPane extends BorderPane {
 
         this.setCenter(studentVBox);
         this.setBottom(buttonsHBox);
-        this.setPadding(new Insets(5));
+        this.setPadding(new Insets(20));
     }
 
     // a function that return the VBox for the Adding student nodes
