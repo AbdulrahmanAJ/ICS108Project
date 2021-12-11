@@ -139,8 +139,10 @@ public class StudentPane extends BorderPane {
         registerButton.setOnAction(e -> {
             // it will check for selectedCourseToRegister
             Course selectedCourseToRegister = openCoursesListView.getSelectionModel().getSelectedItem();
-            selectedCourseToRegister.register();
-            currentStudent.getCourses().add(selectedCourseToRegister);
+            if (selectedCourseToRegister != null) {
+                selectedCourseToRegister.register();
+                currentStudent.getCourses().add(selectedCourseToRegister);
+            }
             refreshPane();
         });
 
@@ -149,16 +151,16 @@ public class StudentPane extends BorderPane {
         dropButton.setOnAction(e -> {
             // it will check for selectedCourseToDrop
             Course selectedCourseToDrop = studentCoursesListView.getSelectionModel().getSelectedItem();
-            selectedCourseToDrop.drop();
-            currentStudent.getCourses().remove(selectedCourseToDrop);
+            if (selectedCourseToDrop != null) {
+                selectedCourseToDrop.drop();
+                currentStudent.getCourses().remove(selectedCourseToDrop);
+            }
             refreshPane();
         });
 
         // a Button to transfer to the add student pane
         Button addingStudentButton = new Button("Add Student");
-        addingStudentButton.setOnAction(e -> {
-            CommonClass.setAddingStudentPane();
-        });
+        addingStudentButton.setOnAction(e -> CommonClass.setAddingStudentPane());
 
         // HBox for buttons
         HBox buttonsHBox = new HBox(10, backButton, registerButton, dropButton, addingStudentButton);
